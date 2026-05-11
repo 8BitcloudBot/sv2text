@@ -42,25 +42,11 @@ SV2TEXT 将你的抖音收藏夹转化为结构化的求职参考手册。它全
 
 ## 系统架构
 
-```
-                         config.py
-                      (全局配置/路径)
-                       /    |    \
-                      /     |     \
-         fetch_collection  download  filter_collection  analyze.py
-         (listcollection)  (详情API  (Qwen过滤)         (Qwen分析)
-               |           +直链)        |                  |
-               |            |            |                  |
-          src/douyin/  ←───┘            └──────────────────┘
-          ├── signer.py     (ABogus 签名算法)
-          ├── antispam.py   (msToken/ttWid 反爬令牌)
-          ├── api.py        (视频详情/图文提取)
-          └── __init__.py
-```
+![系统架构图](docs/images/system-architecture.png)
 
 ### 数据流
 
-```
+![数据流图](docs/images/data-flow.png)
 master_videos.csv ──── 全量收藏 (video_id, title, cover_url) ──── 持久化
        │
        ├─ vs ─ processed_videos.csv (已分析标记)

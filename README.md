@@ -47,38 +47,6 @@ SV2TEXT 将你的抖音收藏夹转化为结构化的求职参考手册。它全
 ### 数据流
 
 ![数据流图](docs/images/data-flow.png)
-master_videos.csv ──── 全量收藏 (video_id, title, cover_url) ──── 持久化
-       │
-       ├─ vs ─ processed_videos.csv (已分析标记)
-       │
-       └──→ session CSV ──→ filter ──→ filtered CSV ──→ download ──→ videos/
-                                     │                                  │
-                                     └──→ analyze ←────────────────────┘
-                                              │
-                                              ├── frames/ (ffmpeg 抽帧)
-                                              ├── Qwen vision API
-                                              ├── reports/individual/{id}.json (断点)
-                                              └── reports/analysis_report.md
-```
-
-### 下载链路
-
-```
-download_video(url)
-  │
-  ├── extract_aweme_id() → 19位视频ID
-  │
-  ├── get_video_detail() → GET /aweme/v1/web/aweme/detail/
-  │     ├── DouyinAntiSpam (msToken + ttWid + 指纹)
-  │     └── ABogus (a_bogus 签名)
-  │
-  ├── type=video → extract_cdn_url() → HTTP直链下载
-  │     └── 按分辨率/FPS/码率排序选最高画质
-  │
-  ├── type=image_note → extract_note_images() → 逐张下载
-  │
-  └── 失败 → yt-dlp 回退
-```
 
 ## 快速开始
 
